@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FastGate</string>
+    <string name="signup"><u>Don’t have an account yet?</u></string>
 </resources>

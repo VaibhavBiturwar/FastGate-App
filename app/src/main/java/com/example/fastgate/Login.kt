@@ -48,23 +48,30 @@ class Login : AppCompatActivity() {
         val email = txtEmail.text.toString()
         val password = txtPass.text.toString()
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.i("Login", "signInWithEmail:success")
-                    val user = auth.currentUser
-                    val intent = Intent(this,HomePage::class.java)
-                    intent.putExtra("email",user!!.email)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w("Login", "signInWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Authentication failed.",
-                        Toast.LENGTH_SHORT).show()
+        if(email != "" &&  password != "" ){
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.i("Login", "signInWithEmail:success")
+                        val user = auth.currentUser
+                        val intent = Intent(this,HomePage::class.java)
+                        intent.putExtra("email",user!!.email)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("Login", "signInWithEmail:failure", task.exception)
+                        Toast.makeText(baseContext, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
+        }
+        else{
+            Toast.makeText(this,"Please enter email and password" , Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
 
