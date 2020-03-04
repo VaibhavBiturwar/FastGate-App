@@ -20,12 +20,14 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.widget.ArrayAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlin.reflect.typeOf
 
 
 class HomePage : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var database: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,28 +36,37 @@ class HomePage : AppCompatActivity() {
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
-
-
         database = FirebaseDatabase.getInstance().reference
-
         var bundel = intent.extras
-        txtEmail.setText(bundel!!.getString("email"))
-
         supportActionBar!!.hide()
-
-
         loaddata()
 
+        rview.isNestedScrollingEnabled  = true
+
+
+
+        val uid = auth.currentUser!!.uid
+        // Write a message to the database
+        val path = "USER/" + uid + "/info/owner_name"
+        val myref = database.child(path)
+        myref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+            override fun onDataChange(p0: DataSnapshot) { txtEmail.setText( p0.value.toString()) }
+        })
+
+
+
+
 
     }
 
-
-    fun logout(view:View){
-        auth.signOut()
-        val intent = Intent(this,Login::class.java)
-        startActivity(intent)
-        finish()
-    }
+//
+//    fun logout(view:View){
+//        auth.signOut()
+//        val intent = Intent(this,Login::class.java)
+//        startActivity(intent)
+//        finish()
+//    }
 
     inner class Incomming(){
             var date: String = ""
@@ -79,15 +90,13 @@ class HomePage : AppCompatActivity() {
 
     fun loaddata(){
         val uid = auth.currentUser!!.uid
-        Log.i("UID",uid)
+//        Log.i("UID",uid)
         // Write a message to the database
         val path = "USER/" + uid + "/incomming"
         val myref = database.child(path)
 
         myref.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-//
-            }
+            override fun onCancelled(p0: DatabaseError) {}
 
             override fun onDataChange(p0: DataSnapshot) {
                 if(p0.exists()){
@@ -102,19 +111,29 @@ class HomePage : AppCompatActivity() {
                         val d = p0.child(z).child("vehicle").value.toString()
                         values.add(Incomming(a,b,c,d))
                                }
-                    load()
+//                    load()
+                    loadRec()
                             }
                                                     } })
     }
 
 
-    fun load(){
+//    fun load(){
+//
+//        loaddata()
+//        val arrayData = ArrayList<String>()
+//        for(x in values)
+//            arrayData.add(x.pr())
+//        val myadap = ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayData)
+//        listView.adapter = myadap
+//    }
+
+    fun loadRec(){
         loaddata()
-        val arrayData = ArrayList<String>()
-        for(x in values)
-            arrayData.add(x.pr())
-        val myadap = ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayData)
-        listView.adapter = myadap
+        layoutManager = LinearLayoutManager(this)
+        rview.layoutManager = layoutManager
+        rview.adapter = VehicleAdapter(this, values)
+
     }
 
 
