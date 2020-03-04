@@ -11,6 +11,7 @@
         android:id="@+id/imageView"
         android:layout_width="255dp"
         android:layout_height="50dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,12 +20,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="5dp"
         android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
         android:background="@drawable/whitecard"
+        android:elevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -38,7 +38,7 @@
             android:layout_marginTop="75dp"
             android:ems="10"
             android:hint="Email Address"
-            android:inputType="textPersonName"
+            android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
             android:layout_marginTop="40dp"
             android:ems="10"
             android:hint="Password"
-            android:inputType="textPersonName"
+            android:inputType="textPassword"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -65,6 +65,7 @@
             android:background="@drawable/ripple"
             android:fontFamily="@font/roboto_black_italic"
             android:onClick="login"
+            android:shadowColor="@color/shadow"
             android:text="Login"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -91,15 +92,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
             android:background="@color/transparent"
             android:fontFamily="@font/roboto_thin_italic"
             android:onClick="signup"
+            android:shadowColor="@color/shadow"
+            android:shadowDx="5"
+            android:shadowDy="5"
+            android:shadowRadius="10"
             android:text="@string/signup"
-
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

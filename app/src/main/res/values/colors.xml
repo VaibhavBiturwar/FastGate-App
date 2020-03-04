@@ -6,4 +6,9 @@
     <color name="yellowDark">#FFC529</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="cream">#FCF6EF</color>
+    <color name="linkblue">#0004FF</color>
+    <color name="red">#F44336</color>
+    <color name="shadow">#353535</color>
+
+
 </resources>

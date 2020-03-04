@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/cream">
+    android:color="@color/linkblue">
     <item>
         <shape android:shape="rectangle">
 
@@ -9,13 +9,12 @@
                 android:bottomRightRadius="20dp"
                 android:topLeftRadius="20dp"
                 android:topRightRadius="20dp"/>
-
         </shape>
     </item>
 
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorPrimaryDark"/>
+            <solid android:color="@color/colorPrimaryDark" />
             <corners
                 android:bottomLeftRadius="20dp"
                 android:bottomRightRadius="20dp"
