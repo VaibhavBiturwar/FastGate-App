@@ -1,10 +1,14 @@
 package com.example.fastgate
 
 
+import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.Window
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.cardlayout.view.*
 
@@ -36,13 +40,50 @@ class VehicleAdapter(private val context: HomePage, private val vehicleList: Arr
         else if( vehicleList.get(position).type == "Snapdeal"){ holder.logo.setImageResource(R.drawable.snapdeallogo) }
 
         holder.itemView.setOnClickListener {
-//            Toast.makeText(context, vehicleList.get(position).vehicle, Toast.LENGTH_LONG).show()
+
+            val dialog = Dialog(context)
+            dialog .requestWindowFeature(Window.FEATURE_NO_TITLE)
+//            dialog .setCancelable(false)
+            dialog .setContentView(R.layout.popup)
+
+            val license = dialog .findViewById(R.id.txtnum) as TextView
+            license.text = vehicleList.get(position).vehicle
+
+            val date = dialog .findViewById(R.id.txtDate) as TextView
+            date.text = vehicleList.get(position).date
+
+            val time = dialog .findViewById(R.id.txtTime) as TextView
+            time.text = vehicleList.get(position).time
+
+            val type = dialog .findViewById(R.id.txtType) as TextView
+            type.text = vehicleList.get(position).type
+
+
+            val logo = dialog.findViewById(R.id.imgLogo) as ImageView
+            if( type.text == "Ola" ) logo.setImageResource(R.drawable.olalogo)
+            else if( type.text == "Uber" ) logo.setImageResource(R.drawable.uberlogo)
+            else if( type.text == "Rapido" ) logo.setImageResource(R.drawable.rapidologo)
+            else if( type.text == "Amazon" ) logo.setImageResource(R.drawable.amazonlogo)
+            else if( type.text == "Flipkart" ) logo.setImageResource(R.drawable.flipkartlogo)
+            else if( type.text == "Snapdeal" ) logo.setImageResource(R.drawable.snapdeallogo)
+            else if( type.text == "Swiggy" ) logo.setImageResource(R.drawable.swiggylogo)
+            else if( type.text == "Zomato" ) logo.setImageResource(R.drawable.zomatologo)
+
+
+
+            val yesBtn = dialog .findViewById(R.id.yesBtn) as Button
+            val noBtn = dialog .findViewById(R.id.noBtn) as Button
+
+            yesBtn.setOnClickListener {
+                dialog .dismiss()
+            }
+            noBtn.setOnClickListener { dialog .dismiss() }
+            dialog .show()
 
 
 
 
 
-        
 
 
         }
