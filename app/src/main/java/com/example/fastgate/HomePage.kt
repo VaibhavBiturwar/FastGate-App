@@ -22,6 +22,8 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.reflect.typeOf
 
 
@@ -29,10 +31,15 @@ class HomePage : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var database: DatabaseReference
+    var loadup = true
+    var lcounter = 0
+    var rcounter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
+
+
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -40,9 +47,6 @@ class HomePage : AppCompatActivity() {
         var bundel = intent.extras
         supportActionBar!!.hide()
         loaddata()
-
-        rview.isNestedScrollingEnabled  = true
-
 
 
         val uid = auth.currentUser!!.uid
@@ -60,13 +64,13 @@ class HomePage : AppCompatActivity() {
 
     }
 
-//
-//    fun logout(view:View){
-//        auth.signOut()
-//        val intent = Intent(this,Login::class.java)
-//        startActivity(intent)
-//        finish()
-//    }
+
+    fun logout(view:View){
+        auth.signOut()
+        val intent = Intent(this,Login::class.java)
+        startActivity(intent)
+        finish()
+    }
 
     inner class Incomming(){
             var date: String = ""
@@ -109,11 +113,15 @@ class HomePage : AppCompatActivity() {
                         val b = p0.child(z).child("time").value.toString()
                         val c = p0.child(z).child("type").value.toString()
                         val d = p0.child(z).child("vehicle").value.toString()
-                        values.add(Incomming(a,b,c,d))
-                               }
-//                    load()
-                    loadRec()
-                            }
+                        values.add(0,Incomming(a,b,c,d))
+
+                    }
+                    rcounter = values.size
+                    if(lcounter != rcounter){
+                        loadRec()
+                        lcounter = rcounter
+                    }
+                }
                                                     } })
     }
 
@@ -133,7 +141,6 @@ class HomePage : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         rview.layoutManager = layoutManager
         rview.adapter = VehicleAdapter(this, values)
-
     }
 
 
