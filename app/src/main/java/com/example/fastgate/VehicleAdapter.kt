@@ -48,17 +48,12 @@ class VehicleAdapter(private val context: HomePage, private val vehicleList: Arr
 
             val license = dialog .findViewById(R.id.txtnum) as TextView
             license.text = vehicleList.get(position).vehicle
-
             val date = dialog .findViewById(R.id.txtDate) as TextView
             date.text = vehicleList.get(position).date
-
             val time = dialog .findViewById(R.id.txtTime) as TextView
             time.text = vehicleList.get(position).time
-
             val type = dialog .findViewById(R.id.txtType) as TextView
             type.text = vehicleList.get(position).type
-
-
             val logo = dialog.findViewById(R.id.imgLogo) as ImageView
             if( type.text == "Ola" ) logo.setImageResource(R.drawable.olalogo)
             else if( type.text == "Uber" ) logo.setImageResource(R.drawable.uberlogo)
@@ -68,15 +63,10 @@ class VehicleAdapter(private val context: HomePage, private val vehicleList: Arr
             else if( type.text == "Snapdeal" ) logo.setImageResource(R.drawable.snapdeallogo)
             else if( type.text == "Swiggy" ) logo.setImageResource(R.drawable.swiggylogo)
             else if( type.text == "Zomato" ) logo.setImageResource(R.drawable.zomatologo)
-
-
-
             val yesBtn = dialog .findViewById(R.id.yesBtn) as Button
             val noBtn = dialog .findViewById(R.id.noBtn) as Button
 
-            yesBtn.setOnClickListener {
-                dialog .dismiss()
-            }
+            yesBtn.setOnClickListener { dialog .dismiss() }
             noBtn.setOnClickListener { dialog .dismiss() }
             dialog .show()
 

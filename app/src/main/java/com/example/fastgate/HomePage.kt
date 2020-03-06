@@ -22,6 +22,9 @@ import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.reflect.typeOf
@@ -59,8 +62,11 @@ class HomePage : AppCompatActivity() {
         })
 
 
-
-
+        val current = LocalDateTime.now()
+        val dtstr = current.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
+        val temp = dtstr.split(",")
+        val dt = temp[1] +" ,"+ temp[2] +"  |  " + temp[0]
+        txtCurrent.setText(dt)
 
     }
 
