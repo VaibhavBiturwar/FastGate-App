@@ -38,6 +38,9 @@ class HomePage : AppCompatActivity() {
     var lcounter = 0
     var rcounter = 0
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
@@ -58,7 +61,10 @@ class HomePage : AppCompatActivity() {
         val myref = database.child(path)
         myref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) { txtEmail.setText( p0.value.toString()) }
+            override fun onDataChange(p0: DataSnapshot) {
+                txtEmail.setText( p0.value.toString())
+
+            }
         })
 
 
@@ -71,12 +77,12 @@ class HomePage : AppCompatActivity() {
     }
 
 
-    fun logout(view:View){
-        auth.signOut()
-        val intent = Intent(this,Login::class.java)
+    fun setting(view:View){
+        val intent = Intent(this,settingsActivity::class.java)
+        intent.putExtra("uid",auth.currentUser!!.uid)
         startActivity(intent)
-        finish()
     }
+
 
     inner class Incomming(){
             var date: String = ""
@@ -131,16 +137,6 @@ class HomePage : AppCompatActivity() {
                                                     } })
     }
 
-
-//    fun load(){
-//
-//        loaddata()
-//        val arrayData = ArrayList<String>()
-//        for(x in values)
-//            arrayData.add(x.pr())
-//        val myadap = ArrayAdapter(this,android.R.layout.simple_list_item_1,arrayData)
-//        listView.adapter = myadap
-//    }
 
     fun loadRec(){
         loaddata()

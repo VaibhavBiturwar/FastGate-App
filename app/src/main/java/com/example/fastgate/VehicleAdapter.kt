@@ -26,9 +26,6 @@ class VehicleAdapter(private val context: HomePage, private val vehicleList: Arr
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.vehicleNo.text = vehicleList.get(position).vehicle
-        holder.date.text = vehicleList.get(position).date
-        holder.time.text = vehicleList.get(position).time
-        holder.type.text = vehicleList.get(position).type
 
         if( vehicleList.get(position).type == "Ola"){ holder.logo.setImageResource(R.drawable.olalogo) }
         else if( vehicleList.get(position).type == "Uber"){ holder.logo.setImageResource(R.drawable.uberlogo) }
@@ -63,6 +60,8 @@ class VehicleAdapter(private val context: HomePage, private val vehicleList: Arr
             else if( type.text == "Snapdeal" ) logo.setImageResource(R.drawable.snapdeallogo)
             else if( type.text == "Swiggy" ) logo.setImageResource(R.drawable.swiggylogo)
             else if( type.text == "Zomato" ) logo.setImageResource(R.drawable.zomatologo)
+                else logo.setImageResource(R.drawable.visotorlogo1)
+
             val yesBtn = dialog .findViewById(R.id.yesBtn) as Button
             val noBtn = dialog .findViewById(R.id.noBtn) as Button
 
@@ -87,9 +86,6 @@ class VehicleAdapter(private val context: HomePage, private val vehicleList: Arr
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val vehicleNo = view.txtVno
-        val date = view.txtdate
-        val time = view.txtTime
-        val type = view.txtType
         val logo = view.imglogo
     }
 }
