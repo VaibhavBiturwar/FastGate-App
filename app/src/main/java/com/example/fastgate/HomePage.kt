@@ -12,6 +12,8 @@ import kotlinx.android.synthetic.main.activity_home_page.*
 import com.google.firebase.database.DatabaseError
 import androidx.annotation.NonNull
 import android.R.attr.keySet
+import android.app.Dialog
+import android.content.Context
 import java.nio.file.Files.exists
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
@@ -19,9 +21,14 @@ import androidx.core.app.ComponentActivity
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.view.Window
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.netcheckpopup.*
+import kotlinx.android.synthetic.main.popup.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -45,20 +52,20 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
-
-
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
         var bundel = intent.extras
         supportActionBar!!.hide()
-        loaddata()
 
+//        Internet Check
+        iCheck()
 
         val uid = auth.currentUser!!.uid
         // Write a message to the database
         val path = "USER/" + uid + "/info/owner_name"
         val myref = database.child(path)
+//      USERNAME
         myref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
@@ -68,6 +75,13 @@ class HomePage : AppCompatActivity() {
         })
 
 
+        loaddata()
+
+        loadReq()
+
+
+
+//      Date & TIME
         val current = LocalDateTime.now()
         val dtstr = current.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL))
         val temp = dtstr.split(",")
@@ -96,14 +110,40 @@ class HomePage : AppCompatActivity() {
             this.type=type
             this.vehicle=vehicle
         }
-        fun pr():String{
-            val d = date+"  "+time+"    "+type+"    "+vehicle
-            return d
-        }
     }
 
-    var values = ArrayList<Incomming>()
 
+    fun loadReq(){
+        val uid = auth.currentUser!!.uid
+//        Log.i("UID",uid)
+        // Write a message to the database
+        val path = "USER/" + uid + "/request"
+        val myref = database.child(path)
+        myref.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+                //
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                p0.children.forEach {
+                    Log.i("PERMISSSION" , p0.child("date").value.toString())
+                    Log.i("PERMISSSION" , p0.child("time").value.toString())
+                    Log.i("PERMISSSION" , p0.child("type").value.toString())
+                    Log.i("PERMISSSION" , p0.child("vehicle").value.toString())
+                    Log.i("PERMISSSION" , p0.child("permission").value.toString())
+
+                }
+
+            }
+        })
+    }
+
+
+
+
+
+
+    var values = ArrayList<Incomming>()
     fun loaddata(){
         val uid = auth.currentUser!!.uid
 //        Log.i("UID",uid)
@@ -146,6 +186,29 @@ class HomePage : AppCompatActivity() {
     }
 
 
+    fun iCheck(){
+
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        if( isConnected == false )
+        {
+            val dialog = Dialog(this)
+            dialog .requestWindowFeature(Window.FEATURE_NO_TITLE)
+//            dialog .setCancelable(false)
+            dialog .setContentView(R.layout.netcheckpopup)
+            dialog .show()
+
+        }
+    }
+
+
+    fun checkInternet():Boolean{
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
+        return isConnected
+    }
 
 
 }
