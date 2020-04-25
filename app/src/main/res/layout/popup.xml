@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/popupbg"
+        android:background="@android:color/background_light"
         android:elevation="20dp"
         android:fadingEdgeLength="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,17 +45,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtnum" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/imgLogo"-->
-<!--            android:layout_width="70dp"-->
-<!--            android:layout_height="70dp"-->
-<!--            android:layout_marginTop="30dp"-->
-<!--            android:elevation="10dp"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintHorizontal_bias="0.5"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:srcCompat="@drawable/rapidologo" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/imgLogo"-->
+        <!--            android:layout_width="70dp"-->
+        <!--            android:layout_height="70dp"-->
+        <!--            android:layout_marginTop="30dp"-->
+        <!--            android:elevation="10dp"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintHorizontal_bias="0.5"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            app:srcCompat="@drawable/rapidologo" />-->
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgLogo"
@@ -70,8 +70,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
         <ImageView
@@ -104,7 +102,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/roboto"
                 android:text="Date"
-                android:textColor="@android:color/background_light"
+                android:textColor="@color/primarydarkblue"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -142,7 +140,7 @@
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/roboto"
                 android:text="Time"
-                android:textColor="@android:color/background_light"
+                android:textColor="@color/primarydarkblue"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -172,7 +170,7 @@
             android:layout_marginTop="30dp"
             android:fontFamily="@font/roboto"
             android:text="Vehicle No"
-            android:textColor="@android:color/background_light"
+            android:textColor="@color/primarydarkblue"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -200,7 +198,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="7dp"
             android:layout_marginEnd="7dp"
-            android:background="@drawable/closeicon"
+            android:background="@android:drawable/ic_menu_close_clear_cancel"
             android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

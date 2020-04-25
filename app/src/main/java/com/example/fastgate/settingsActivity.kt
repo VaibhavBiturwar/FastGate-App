@@ -43,10 +43,6 @@ class settingsActivity : AppCompatActivity() {
                 flat  =  p0.child("flat_no").value.toString()
             } })
 
-
-
-
-
     }
 
 

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#FFC529</color>
+<!--    <color name="colorPrimaryDark">#FFC529</color>-->
+
     <color name="colorAccent">#2196F3</color>
     <color name="yellowDark">#FFC529</color>
     <color name="transparent">#00FFFFFF</color>
@@ -12,8 +13,16 @@
     <color name="shadowtext">#838388</color>
     <color name="rvbg">#FFFFFF</color>
     <color name="cardborder">#D2D9EB</color>
-    <color name="lightcolortext">#9922215B</color>
+
     <color name="bg">#F1F3F6</color>
+
+
+
+    <color name="colorPrimaryDark">#2388DD</color>
+    <color name="primaryblue">#2699FB</color>
+    <color name="primarydarkblue">#1C70B4</color>
+    <color name="bluishwhite">#F1F9FF</color>
+    <color name="lightcolortext">#818181</color>
 
 
 

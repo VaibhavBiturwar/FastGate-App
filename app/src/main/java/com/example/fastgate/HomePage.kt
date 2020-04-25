@@ -1,6 +1,5 @@
 package com.example.fastgate
 
-import android.R.attr.data
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,41 +9,36 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_home_page.*
 import com.google.firebase.database.DatabaseError
-import androidx.annotation.NonNull
-import android.R.attr.keySet
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import java.nio.file.Files.exists
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-import androidx.core.app.ComponentActivity
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.view.Window
-import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.netcheckpopup.*
-import kotlinx.android.synthetic.main.popup.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.reflect.typeOf
+
 
 
 class HomePage : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var database: DatabaseReference
-    var loadup = true
     var lcounter = 0
     var rcounter = 0
+    var x:AlertDialog? = null
 
+    var username =""
 
 
 
@@ -52,32 +46,44 @@ class HomePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+
+        reqContainer.isVisible = false
+        supportActionBar!!.hide()
+
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance().reference
         var bundel = intent.extras
-        supportActionBar!!.hide()
 
-//        Internet Check
-        iCheck()
 
+        if(iCheck())
+        {
+//        Loading Animation
+            val builder =  AlertDialog.Builder(this)
+            val inflator = this.layoutInflater
+            builder.setView(inflator.inflate(R.layout.loading,null))
+            builder.setCancelable(false)
+            x = builder.create()
+            x!!.show()
+        }
+
+//      USERNAME
         val uid = auth.currentUser!!.uid
-        // Write a message to the database
         val path = "USER/" + uid + "/info/owner_name"
         val myref = database.child(path)
-//      USERNAME
         myref.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
-                txtEmail.setText( p0.value.toString())
+                username = p0.value.toString()
+                txtEmail.setText(username)
+            } })
 
-            }
-        })
-
-
+//      Loading Recycler view
         loaddata()
 
+//        Loading request Container
         loadReq()
+
 
 
 
@@ -88,15 +94,16 @@ class HomePage : AppCompatActivity() {
         val dt = temp[1] +" ,"+ temp[2] +"  |  " + temp[0]
         txtCurrent.setText(dt)
 
+
     }
 
 
     fun setting(view:View){
         val intent = Intent(this,settingsActivity::class.java)
         intent.putExtra("uid",auth.currentUser!!.uid)
+        intent.putExtra("username",username)
         startActivity(intent)
     }
-
 
     inner class Incomming(){
             var date: String = ""
@@ -112,36 +119,52 @@ class HomePage : AppCompatActivity() {
         }
     }
 
-
     fun loadReq(){
+
+        val container = findViewById(R.id.reqContainer) as ConstraintLayout
         val uid = auth.currentUser!!.uid
-//        Log.i("UID",uid)
-        // Write a message to the database
         val path = "USER/" + uid + "/request"
         val myref = database.child(path)
         myref.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-                //
-            }
+            override fun onCancelled(p0: DatabaseError) {}
+
+            val Time = findViewById(R.id.txtTime) as TextView
+            val Type = findViewById(R.id.txtType) as TextView
+            val Number = findViewById(R.id.txtNumber) as TextView
+            val Logo = findViewById(R.id.imageView3) as ImageView
 
             override fun onDataChange(p0: DataSnapshot) {
                 p0.children.forEach {
-                    Log.i("PERMISSSION" , p0.child("date").value.toString())
-                    Log.i("PERMISSSION" , p0.child("time").value.toString())
-                    Log.i("PERMISSSION" , p0.child("type").value.toString())
-                    Log.i("PERMISSSION" , p0.child("vehicle").value.toString())
-                    Log.i("PERMISSSION" , p0.child("permission").value.toString())
 
+                    if( p0.child("permission").value.toString() == "None" ){
+
+                        Log.i("PERMISSSION" , p0.child("time").value.toString())
+                        Time.setText(p0.child("time").value.toString())
+
+                        Log.i("PERMISSSION" , p0.child("type").value.toString())
+                        val type = p0.child("type").value.toString()
+
+                        Log.i("PERMISSSION" , p0.child("vehicle").value.toString())
+                        Number.setText(p0.child("vehicle").value.toString())
+
+                        Type.setText(type)
+                        if( type == "Ola" ) Logo.setImageResource(R.drawable.olalogo)
+                        else if( type == "Uber" ) Logo.setImageResource(R.drawable.uberlogo)
+                        else if( type == "Rapido" ) Logo.setImageResource(R.drawable.rapidologo)
+                        else if( type == "Amazon" ) Logo.setImageResource(R.drawable.amazonlogo)
+                        else if( type == "Flipkart" ) Logo.setImageResource(R.drawable.flipkartlogo)
+                        else if( type == "Snapdeal" ) Logo.setImageResource(R.drawable.snapdeallogo)
+                        else if( type == "Swiggy" ) Logo.setImageResource(R.drawable.swiggylogo)
+                        else if( type == "Zomato" ) Logo.setImageResource(R.drawable.zomatologo)
+                        else Logo.setImageResource(R.drawable.visotorlogo1)
+
+                        if( container.isVisible == false )
+                            container.isVisible = true
+                    }
                 }
-
             }
         })
     }
-
-
-
-
-
 
     var values = ArrayList<Incomming>()
     fun loaddata(){
@@ -177,16 +200,15 @@ class HomePage : AppCompatActivity() {
                                                     } })
     }
 
-
     fun loadRec(){
         loaddata()
         layoutManager = LinearLayoutManager(this)
         rview.layoutManager = layoutManager
         rview.adapter = VehicleAdapter(this, values)
+        x!!.dismiss()
     }
 
-
-    fun iCheck(){
+    fun iCheck():Boolean{
 
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
@@ -198,16 +220,26 @@ class HomePage : AppCompatActivity() {
 //            dialog .setCancelable(false)
             dialog .setContentView(R.layout.netcheckpopup)
             dialog .show()
-
+            return false
         }
+        else
+            return true
     }
 
+    fun allowPermission(view:View){
+        val uid = auth.currentUser!!.uid
+        val path = "USER/" + uid + "/request/permission"
+        val myref = database.child(path)
+        myref.setValue("Yes")
+        reqContainer.isVisible = false
+    }
 
-    fun checkInternet():Boolean{
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnectedOrConnecting == true
-        return isConnected
+    fun denyPermission(view:View){
+        val uid = auth.currentUser!!.uid
+        val path = "USER/" + uid + "/request/permission"
+        val myref = database.child(path)
+        myref.setValue("No")
+        reqContainer.isVisible = false
     }
 
 
